@@ -6,21 +6,15 @@ use App\Models\size as ModelsSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class size extends Controller
+class SizeController extends Controller
 {
-    public $data = [];
-
-    private $size;
-    public function __construct()
-    {
-        $this->size = new size(); // Corrected the instantiation
-    }
-
     public function index()
     {
-        $this->data['size'] = ModelsSize::get()
-        ->paginate(5); 
-        return view('size.index', $this->data);
+        // $this->data['size'] = ModelsSize::get()
+        // ->paginate(5); 
+        // return view('size.index', $this->data);
+        
+        return '$check';
     }
     public function store(Request $request)
     {
@@ -43,14 +37,8 @@ class size extends Controller
         }
     }
     public function update(Request $request){
-        $check =  DB::table('size')->get();
-        foreach ($check as $value) {
-            if ($value->size == $request->input('size')) {
-                flash()->addError('Kích cỡ này đã tồn tại.');
-            }
-        }
         $result = DB::table('size')
-        ->where('size_id', $request->input('id'))
+        ->where('size_id', $request->input('size_id'))
         ->update([
             'size'=>$request->input('size'),
             'updated_at' => now(),
