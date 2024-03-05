@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('order_detail_id');
             $table->date('quantity');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('id_user')->on('users');
             $table->timestamps();
         });
     }
