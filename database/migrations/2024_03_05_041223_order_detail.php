@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('order_detail', function (Blueprint $table) {
+            $table->id('order_detail_id');
+            $table->date('quantity');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->timestamps();
+        });
     }
 
     /**

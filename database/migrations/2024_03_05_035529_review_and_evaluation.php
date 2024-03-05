@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id('review_id');
             $table->integer('review');
             $table->string('evaluation');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('product_id')->on('product');
             $table->timestamps();
         });
     }

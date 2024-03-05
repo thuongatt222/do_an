@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('review_and_evaluation', function (Blueprint $table) {
-            $table->id('review_id');
-            $table->integer('review');
-            $table->string('evaluation');
+        Schema::create('order', function (Blueprint $table) {
+            $table->id('order_id');
+            $table->date('purchase_date');
+            $table->string('address');
+            $table->string('phone_number');
+            $table->string('status');
+            $table->double('total');
             $table->timestamps();
         });
     }
