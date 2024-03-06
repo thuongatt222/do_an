@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Brand\StoreBrandRequest;
+use App\Http\Requests\Brand\UpdateBrandRequest;
 use App\Http\Resources\Brand\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBrandRequest $request)
     {
         $dataCreate = $request->all();
         $brand = $this->brand->create($dataCreate);
@@ -47,14 +49,14 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBrandRequest $request, string $id)
     {
         $brand = $this->brand->findOrFail($id);
         $dataUpdate = $request->all();
         $brand->update($dataUpdate);
-        $sizeResource = new BrandResource($brand);
+        $brandResource = new BrandResource($brand);
         return response()->json([
-            'data' => $sizeResource,
+            'data' => $brandResource,
         ], HttpResponse::HTTP_OK);
     }
 
