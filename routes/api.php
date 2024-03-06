@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SizeController;
+use App\Http\Resources\SizeConllection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-    
 });
-Route::prefix('size')->group(function () {
-        Route::get('show', [SizeController::class, 'index'])->name('size');
-        Route::post('update', [SizeController::class, 'update'])->name('size_update');
-        Route::post('insert', [SizeController::class, 'store'])->name('size_insert');
-        Route::post('destroy', [SizeController::class, 'destroy'])->name('size_destroy');
-    });
+// Route::prefix('size')->group(function () {
+//     Route::get('show', [SizeController::class, 'index'])->name('size_show');
+//     Route::post('update', [SizeController::class, 'update'])->name('size_update');
+//     Route::post('insert', [SizeController::class, 'store'])->name('size_insert');
+//     Route::post('destroy', [SizeController::class, 'destroy'])->name('size_destroy');
+// });
+Route::apiResource('size', SizeController::class);
