@@ -2,60 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use App\Http\Resources\Brand\BrandResource;
+use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+
 
 class BrandController extends Controller
 {
-    
+    protected $brand;
+    public function __construct(Brand $brand)
+    {
+        $this->brand = $brand;
+    }
+    public function index()
+    {
+        $brands = $this->brand->paginate(5);
+        $brandsResource = BrandResource::collection($brands)->response()->getData(true);
+        return response()->json([
+            'data' => $brandsResource,
+        ], HttpResponse::HTTP_OK);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $check =  DB::table('brand')->get();
-        foreach ($check as $value) {
-            if ($value->size == $request->input('brand_name')) {
-                flash()->addError('Kích cỡ này đã tồn tại.');
-            }
-        }
-        $result = DB::table('brand')->insert([
-            'brand_name'=>$request->input('brand_name'),
-            'created_at' => now(),
-        ]);
-        if($result){
-            flash()->addSuccess('Thêm thành công');
-            return redirect()->route('brand');
-        }else{
-            flash()->addError("Thêm thất bại");
-            return redirect()->route('brand');
-        }
+        $dataCreate = $request->all();
+        $brand = $this->brand->create($dataCreate);
+        $brandResource = new BrandResource($brand);
+        return response()->json([
+            'data' => $brandResource,
+        ], HttpResponse::HTTP_OK);
     }
-    public function update(Request $request){
-        $result = DB::table('brand')
-        ->where('brand_id', $request->input('brand_id'))
-        ->update([
-            'brand_name'=>$request->input('brand_name'),
-            'updated_at' => now(),
-        ]);
-        if($result){
-            flash()->addSuccess('Thêm thành công');
-            return redirect()->route('brand');
-        }else{
-            flash()->addError("Thêm thất bại");
-            return redirect()->route('brand');
-        }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
     }
-    public function destroy(Request $request){
-        $hasRelatedRecords = DB::table('brand')->where('brand_id', $request->input('id'))->exists();
-        if ($hasRelatedRecords) {
-            flash()->addError("Xóa thất bại - Có dữ liệu liên quan");
-            return redirect()->back();
-        }
-        $result = DB::table('brand')->where('brand_id', '=', $request->input('id'))->delete();
-        if($result){
-            flash()->addSuccess('Xóa thành công');
-            return redirect()->route('brand');
-        }else{
-            flash()->addError("Xóa thất bại");
-            return redirect()->route('brand');
-        }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $brand = $this->brand->findOrFail($id);
+        $dataUpdate = $request->all();
+        $brand->update($dataUpdate);
+        $sizeResource = new BrandResource($brand);
+        return response()->json([
+            'data' => $sizeResource,
+        ], HttpResponse::HTTP_OK);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $brand = $this->brand->where('size_id', $id)->firstOrFail();
+        $brand->delete();
+        $brandResource = new BrandResource($brand);
+        return response()->json([
+            'data' => $brandResource,
+        ], HttpResponse::HTTP_OK);
     }
 }
