@@ -20,6 +20,8 @@ return new class extends Migration
             $table->double('discount');
             $table->unsignedBigInteger('brand_id');
             $table->foreign('brand_id')->references('brand_id')->on('brand');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('category_id')->on('category');
             $table->timestamps();
         });
     }
