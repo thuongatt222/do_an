@@ -12,4 +12,5 @@ class Brand extends Model
         'brand_name',
     ];
     protected $primaryKey = 'brand_id';
+    protected $table = 'brand';
 }

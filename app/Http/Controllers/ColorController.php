@@ -68,7 +68,7 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
-        $color = $this->color->where('size_id', $id)->firstOrFail();
+        $color = $this->color->where('color_id', $id)->firstOrFail();
         $color->delete();
         $colorResource = new ColorResource($color);
         return response()->json([

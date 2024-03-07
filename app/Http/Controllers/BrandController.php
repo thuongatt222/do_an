@@ -65,7 +65,7 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        $brand = $this->brand->where('size_id', $id)->firstOrFail();
+        $brand = $this->brand->where('brand_id', $id)->firstOrFail();
         $brand->delete();
         $brandResource = new BrandResource($brand);
         return response()->json([

@@ -68,7 +68,7 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = $this->category->where('size_id', $id)->firstOrFail();
+        $category = $this->category->where('category_id', $id)->firstOrFail();
         $category->delete();
         $categoryResource = new CategoryResource($category);
         return response()->json([

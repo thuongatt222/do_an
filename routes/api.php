@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SizeController;
 use App\Http\Resources\SizeConllection;
 use Illuminate\Http\Request;
@@ -26,3 +27,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     Route::post('destroy', [SizeController::class, 'destroy'])->name('size_destroy');
 // });
 Route::apiResource('size', SizeController::class);
+Route::apiResource('brand', BrandController::class);
