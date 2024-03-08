@@ -17,6 +17,6 @@ class Product extends Model
         'brand_id',
         'category_id'
     ];
-    protected $table = 'product';
     protected $primaryKey = 'product_id';
+    protected $table = 'product';
 }

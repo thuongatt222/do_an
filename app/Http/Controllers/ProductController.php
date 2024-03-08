@@ -35,7 +35,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $check =  DB::table('products')->get();
+        $check =  DB::table('product')->get();
         foreach ($check as $value) {
             if ($value->product == $request->input('product')) {
                 flash()->addError('Kích cỡ này đã tồn tại.');
@@ -76,7 +76,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = $this->product->where('size_id', $id)->firstOrFail();
+        $product = $this->product->where('product_id', $id)->firstOrFail();
         $product->delete();
         $productResource = new ProductResource($product);
         return response()->json([
