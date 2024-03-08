@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Shipping;
+namespace App\Http\Requests\OrderDetail;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-class UpdateShippingRequest extends FormRequest
+class StoreOrderDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,9 @@ class UpdateShippingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shipping_method' => 'required',
+            'quantity' => 'required',
+            'order_id' => 'required',
+            'user_id' => 'required',
         ];
     }
     protected function failedValidation(Validator $validator)

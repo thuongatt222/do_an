@@ -3,8 +3,11 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SizeController;
 use App\Http\Resources\SizeConllection;
@@ -38,3 +41,6 @@ Route::apiResource('category', CategoryController::class);
 Route::apiResource('color', ColorController::class);
 Route::apiResource('payment', PaymentController::class);
 Route::apiResource('shipping', ShippingController::class);
+Route::apiResource('productdetail', ProductDetailController::class);
+Route::apiResource('orderdetail', OrderDetailController::class);
+Route::apiResource('order', OrderController::class);

@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('status');
             $table->double('total');
+            $table->unsignedBigInteger('payment_method_id');
+            $table->foreign('payment_method_id')->references('payment_method_id')->on('payment_method');
+            $table->unsignedBigInteger('shipping_method_id');
+            $table->foreign('shipping_method_id')->references('shipping_method_id')->on('shipping_method');
             $table->timestamps();
         });
     }
