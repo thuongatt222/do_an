@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\Size\StoreSizeRequest;
 use App\Http\Requests\Size\UpdateSizeRequest;
-use App\Http\Resources\SizeConllection;
-use App\Http\Resources\SizeResource;
+use App\Http\Resources\Size\SizeResource;
 use App\Models\size as ModelsSize;
-use Flasher\Symfony\Http\Response;
-use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\DB;
 
 class SizeController extends Controller
 {
@@ -25,8 +20,8 @@ class SizeController extends Controller
      */
     public function index()
     {
-        $sizes = $this->size->paginate(5);
-        $sizesResource = SizeResource::collection($sizes)->response()->getData(true);
+        $size = $this->size->paginate(5);
+        $sizesResource = SizeResource::collection($size)->response()->getData(true);
         return response()->json([
             'data' => $sizesResource,
         ], HttpResponse::HTTP_OK);
@@ -37,12 +32,6 @@ class SizeController extends Controller
      */
     public function store(StoreSizeRequest $request)
     {
-        $check =  DB::table('sizes')->get();
-        foreach ($check as $value) {
-            if ($value->size == $request->input('size')) {
-                flash()->addError('Kích cỡ này đã tồn tại.');
-            }
-        }
         $dataCreate = $request->all();
         $size = $this->size->create($dataCreate);
         $sizeResource = new SizeResource($size);

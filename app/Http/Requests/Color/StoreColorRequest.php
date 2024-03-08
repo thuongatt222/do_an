@@ -25,7 +25,7 @@ class StoreColorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'color_name' => 'required',
+            'color' => 'required',
         ];
     }
     protected function failedValidation(Validator $validator)

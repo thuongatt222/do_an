@@ -25,8 +25,6 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'payment_method' => 'required',
-            'payment_date' => 'required',
-            'payment_status' => 'required',
         ];
     }
     protected function failedValidation(Validator $validator)
