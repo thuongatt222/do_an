@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
 use App\Http\Resources\SizeConllection;
@@ -32,3 +33,4 @@ Route::apiResource('size', SizeController::class);
 Route::apiResource('brand', BrandController::class);
 Route::apiResource('product', ProductController::class);
 Route::apiResource('category', CategoryController::class);
+Route::apiResource('color', ColorController::class);
