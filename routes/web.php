@@ -17,6 +17,9 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/', function () {
     return view('dashboard.index');
 });
+Route::get('/test', function () {
+    return view('dashboard.index');
+});
 Route::get('/auth/facebook/callback', function () {
     $facebookUser = Socialite::driver('facebook')->user();
 });
