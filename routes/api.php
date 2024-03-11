@@ -44,3 +44,6 @@ Route::apiResource('shipping', ShippingController::class);
 Route::apiResource('productdetail', ProductDetailController::class);
 Route::apiResource('orderdetail', OrderDetailController::class);
 Route::apiResource('order', OrderController::class);
+Route::post('/cart', [OrderDetailController::class, 'cart']);
+Route::delete('/cart/remove', [OrderDetailController::class, 'removeFromCart']);
+Route::get('/cart', [OrderDetailController::class, 'showCart']);
