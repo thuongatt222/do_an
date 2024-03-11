@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('dashboard.index');
 });
 Route::get('/test', function () {
-    return view('dashboard.index');
+    return view('dashboard.pages.samples.login');
 });
 Route::get('/auth/facebook/callback', function () {
     $facebookUser = Socialite::driver('facebook')->user();
