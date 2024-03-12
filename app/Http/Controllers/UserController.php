@@ -35,6 +35,12 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $dataCreate = $request->all();
+        $check = User::where('email', $dataCreate['email'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'email đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $user = $this->user->create($dataCreate);
         $userResource = new UserResource($user);
         return response()->json([
@@ -57,6 +63,12 @@ class UserController extends Controller
     {
         $user = $this->user->findOrFail($id);
         $dataUpdate = $request->all();
+        $check = User::where('email', $dataUpdate['email'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'email đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $user->update($dataUpdate);
         $userResource = new UserResource($user);
         return response()->json([

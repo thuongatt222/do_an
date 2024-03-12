@@ -35,6 +35,12 @@ class PaymentController extends Controller
     public function store(StorePaymentRequest $request)
     {
         $dataCreate = $request->all();
+        $check = Payment::where('payment_method', $dataCreate['payment_method'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Phương thức đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $payment = $this->payment->create($dataCreate);
         $paymentResource = new PaymentResource($payment);
         return response()->json([
@@ -56,9 +62,15 @@ class PaymentController extends Controller
     public function update(UpdatePaymentRequest $request, string $id)
     {
         $payment = $this->payment->findOrFail($id);
-       $dataUpdate = $request->all();
-       $payment->update($dataUpdate);
-       $paymentResource = new PaymentResource($payment);
+        $dataUpdate = $request->all();
+        $check = Payment::where('payment_method', $dataUpdate['payment_method'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Phương thức đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
+        $payment->update($dataUpdate);
+        $paymentResource = new PaymentResource($payment);
         return response()->json([
             'data' => $paymentResource,
         ], HttpResponse::HTTP_OK);
@@ -69,6 +81,12 @@ class PaymentController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = Payment::where('payment_method_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Phương thức này đã tồn tại trong hóa đơn nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $payment = $this->payment->where('payment_method_id', $id)->firstOrFail();
         $payment->delete();
         $paymentResource = new PaymentResource($payment);

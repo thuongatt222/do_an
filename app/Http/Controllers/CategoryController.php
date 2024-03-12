@@ -6,6 +6,7 @@ use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -33,6 +34,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $category_name = $request->input('category_name');
+        $check = Category::where('category_name', $category_name)->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Tên thể loại này đã tồn tại.'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $dataCreate = $request->all();
         $category = $this->category->create($dataCreate);
         $categoryResource = new CategoryResource($category);
@@ -56,6 +64,12 @@ class CategoryController extends Controller
     {
         $category = $this->category->findOrFail($id);
         $dataUpdate = $request->all();
+        $check = Category::where('brand_name', $dataUpdate['brand_name'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Tên thể loại này đã tồn tại!',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $category->update($dataUpdate);
         $categoryResource = new CategoryResource($category);
         return response()->json([
@@ -68,6 +82,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = Product::where('category_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Thể loại này đang có sản phẩm nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $category = $this->category->where('category_id', $id)->firstOrFail();
         $category->delete();
         $categoryResource = new CategoryResource($category);

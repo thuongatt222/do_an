@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Shipping\StoreShippingRequest;
 use App\Http\Requests\Shipping\UpdateShippingRequest;
 use App\Http\Resources\Shipping\ShippingResource;
+use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
@@ -34,6 +35,12 @@ class ShippingController extends Controller
     public function store(StoreShippingRequest $request)
     {
         $dataCreate = $request->all();
+        $check = Shipping::where('shipping_method', $dataCreate['shipping_method'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'Phương thức đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $shipping = $this->shipping->create($dataCreate);
         $shippingResource = new ShippingResource($shipping);
         return response()->json([
@@ -56,6 +63,12 @@ class ShippingController extends Controller
     {
         $shipping = $this->shipping->findOrFail($id);
         $dataUpdate = $request->all();
+        $check = Shipping::where('shipping_method', $dataUpdate['shipping_method'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'Phương thức đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $shipping->update($dataUpdate);
         $shippingResource = new ShippingResource($shipping);
         return response()->json([
@@ -68,6 +81,12 @@ class ShippingController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = Order::where('shipping_method_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Phương thức này đã tồn tại trong hóa đơn nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $shipping = $this->shipping->where('shipping_method_id', $id)->firstOrFail();
         $shipping->delete();
         $shippingResource = new ShippingResource($shipping);

@@ -63,7 +63,6 @@ class OrderDetailController extends Controller
             'data' => $order_detailResource,
         ], HttpResponse::HTTP_OK);
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -82,30 +81,19 @@ class OrderDetailController extends Controller
     public function cart(Request $request)
     {
         $productId = $request->input('product_id');
-        $quantity = $request->input('quantity'); // Default quantity is 1 if not specified
-
-        // Assuming you have a Product model to find the product details
+        $quantity = $request->input('quantity');
         $product = Product::findOrFail($productId);
-
-        // Check if the cart is already in the session
         $cart = session()->get('cart', []);
-
-        // Check if this product exists in the cart
         if (isset($cart[$productId])) {
-            // Product exists in the cart, update the quantity
             $cart[$productId]['quantity'] += $quantity;
         } else {
-            // Product does not exist in the cart, add to the cart with product details
             $cart[$productId] = [
                 "name" => $product->name,
                 "price" => $product->price,
                 "quantity" => $quantity,
             ];
         }
-
-        // Put the cart back into the session
         session()->put('cart', $cart);
-
         return response()->json([
             'data' => session()->get('cart'),
         ], HttpResponse::HTTP_OK);
@@ -116,24 +104,15 @@ class OrderDetailController extends Controller
     public function removeFromCart(Request $request)
     {
         $productId = $request->input('product_id');
-
-        // Retrieve the cart from the session
         $cart = session()->get('cart', []);
-
-        // Check if the product exists in the cart
         if (isset($cart[$productId])) {
-            // Product exists, remove it from the cart
             unset($cart[$productId]);
-
-            // Update the session with the new cart
             session()->put('cart', $cart);
-
             return response()->json([
                 'message' => 'Product removed successfully from the cart',
                 'data' => session()->get('cart'),
             ], HttpResponse::HTTP_OK);
         } else {
-            // Product not found in the cart, return an error message
             return response()->json([
                 'message' => 'Product not found in the cart',
             ], HttpResponse::HTTP_NOT_FOUND);
@@ -144,16 +123,11 @@ class OrderDetailController extends Controller
      */
     public function showCart()
     {
-        // Retrieve the cart from the session, default to an empty array if not found
         $cart = session()->get('cart', []);
-
-        // Calculate total price for the cart items
         $totalPrice = 0;
         foreach ($cart as $item) {
             $totalPrice += $item['price'] * $item['quantity'];
         }
-
-        // Return the cart data along with the total price
         return response()->json([
             'data' => $cart,
             'total_price' => $totalPrice,

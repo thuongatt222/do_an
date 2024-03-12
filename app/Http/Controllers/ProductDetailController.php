@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductDetail\StoreProductDetailRequest;
 use App\Http\Requests\ProductDetail\UpdateProductDetailRequest;
 use App\Http\Resources\ProductDetail\ProductDetailResource;
+use App\Models\Color;
+use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\size;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -34,6 +37,14 @@ class ProductDetailController extends Controller
     public function store(StoreProductDetailRequest $request)
     {
         $dataCreate = $request->all();
+        $check = ProductDetail::where('color_id', $dataCreate['color_id'])
+            ->where('product_id', $dataCreate['product_id'])
+            ->where('size_id', $dataCreate['size_id'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'Sản phẩm này đã tồn tại'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $product_detail = $this->product_detail->create($dataCreate);
         $product_detailResource = new ProductDetailResource($product_detail);
         return response()->json([
@@ -56,6 +67,14 @@ class ProductDetailController extends Controller
     {
         $product_detail = $this->product_detail->findOrFail($id);
         $dataUpdate = $request->all();
+        $check = ProductDetail::where('color_id', $dataUpdate['color_id'])
+            ->where('product_id', $dataUpdate['product_id'])
+            ->where('size_id', $dataUpdate['size_id'])->exists();
+        if($check){
+            return response()->json([
+                'error' => 'Sản phẩm này đã tồn tại'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $product_detail->update($dataUpdate);
         $product_detailResource = new ProductDetailResource($product_detail);
         return response()->json([

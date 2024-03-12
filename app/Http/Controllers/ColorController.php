@@ -6,6 +6,7 @@ use App\Http\Requests\Color\StoreColorRequest;
 use App\Http\Requests\Color\UpdateColorRequest;
 use App\Http\Resources\Color\ColorResource;
 use App\Models\Color;
+use App\Models\ProductDetail;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,13 @@ class ColorController extends Controller
      */
     public function store(StoreColorRequest $request)
     {
+        $color = $request->input('color');
+        $check = Color::where('color', $color)->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Màu này đã tồn tại.'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $dataCreate = $request->all();
         $color = $this->color->create($dataCreate);
         $colorResource = new ColorResource($color);
@@ -56,6 +64,12 @@ class ColorController extends Controller
     {
         $color = $this->color->findOrFail($id);
         $dataUpdate = $request->all();
+        $check = Color::where('color', $dataUpdate['color'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Màu này đã tồn tại!',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $color->update($dataUpdate);
         $colorResource = new ColorResource($color);
         return response()->json([
@@ -68,6 +82,12 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = ProductDetail::where('color_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Màu này đang có sản phẩm nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $color = $this->color->where('color_id', $id)->firstOrFail();
         $color->delete();
         $colorResource = new ColorResource($color);

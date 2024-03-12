@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Size\StoreSizeRequest;
 use App\Http\Requests\Size\UpdateSizeRequest;
 use App\Http\Resources\Size\SizeResource;
+use App\Models\ProductDetail;
 use App\Models\size as ModelsSize;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -32,6 +33,13 @@ class SizeController extends Controller
      */
     public function store(StoreSizeRequest $request)
     {
+        $size = $request->input('size');
+        $check = ModelsSize::where('size', $size)->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Kích cỡ này đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $dataCreate = $request->all();
         $size = $this->size->create($dataCreate);
         $sizeResource = new SizeResource($size);
@@ -45,7 +53,6 @@ class SizeController extends Controller
      */
     public function show(string $id)
     {
-        
     }
 
     /**
@@ -53,14 +60,19 @@ class SizeController extends Controller
      */
     public function update(UpdateSizeRequest $request, string $id)
     {
-       $size = $this->size->findOrFail($id);
-       $dataUpdate = $request->all();
-       $size->update($dataUpdate);
-       $sizeResource = new SizeResource($size);
+        $size = $this->size->findOrFail($id);
+        $dataUpdate = $request->all();
+        $check = ModelsSize::where('size', $dataUpdate['size'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Kích cỡ này đã tồn tại!',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
+        $size->update($dataUpdate);
+        $sizeResource = new SizeResource($size);
         return response()->json([
             'data' => $sizeResource,
         ], HttpResponse::HTTP_OK);
-        
     }
 
     /**
@@ -68,6 +80,12 @@ class SizeController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = ProductDetail::where('size_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Màu này đang có sản phẩm nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $size = $this->size->where('size_id', $id)->firstOrFail();
         $size->delete();
         $sizeResource = new SizeResource($size);

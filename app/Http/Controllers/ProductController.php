@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
@@ -35,13 +36,13 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $check =  DB::table('product')->get();
-        foreach ($check as $value) {
-            if ($value->product == $request->input('product')) {
-                flash()->addError('Kích cỡ này đã tồn tại.');
-            }
-        }
         $dataCreate = $request->all();
+        $check = Product::where('product_name', $dataCreate['product_name'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Sản phẩm này đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $product = $this->product->create($dataCreate);
         $productResource = new ProductResource($product);
         return response()->json([
@@ -63,9 +64,15 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, string $id)
     {
         $product = $this->product->findOrFail($id);
-       $dataUpdate = $request->all();
-       $product->update($dataUpdate);
-       $productResource = new ProductResource($product);
+        $dataUpdate = $request->all();
+        $check = Product::where('product_name', $dataUpdate['product_name'])->exists();
+        if ($check) {
+            return response()->json([
+                'error' => 'Sản phẩm này đã tồn tại!'
+            ], HttpResponse::HTTP_CONFLICT);
+        }
+        $product->update($dataUpdate);
+        $productResource = new ProductResource($product);
         return response()->json([
             'data' => $productResource,
         ], HttpResponse::HTTP_OK);
@@ -76,6 +83,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
+        $isUsedInOtherTable = OrderDetail::where('product_id', $id)->exists();
+        if ($isUsedInOtherTable) {
+            return response()->json([
+                'error' => 'Sản phẩm này đã tồn tại trong hóa đơn nên không thể xóa.',
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $product = $this->product->where('product_id', $id)->firstOrFail();
         $product->delete();
         $productResource = new ProductResource($product);
