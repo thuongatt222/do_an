@@ -30,7 +30,7 @@ class ProductController extends Controller
             'data' => $productsResource,
         ], HttpResponse::HTTP_OK);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */

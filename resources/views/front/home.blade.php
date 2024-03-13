@@ -77,12 +77,11 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-lg-4 col-md-6">
         <div class="single-product">
           <div class="product-img">
-            <img class="img-fluid w-100" src="img/product/feature-product/f-p-1.jpg" alt="" />
+            <img class="img-fluid w-100" src="" alt="" />
             <div class="p_icon">
               <a href="#">
                 <i class="ti-eye"></i>
