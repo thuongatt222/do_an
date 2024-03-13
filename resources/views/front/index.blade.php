@@ -63,7 +63,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light w-100">
                     <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="{{ route('index') }}">
+                    <a class="navbar-brand logo_h" href="{{ route('home') }}">
                         <img src="img/logo.png" alt="" />
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -79,7 +79,7 @@
                             <div class="col-lg-7 pr-0">
                                 <ul class="nav navbar-nav center_nav pull-right">
                                     <li class="nav-item active">
-                                        <a class="nav-link" href="{{ route('index') }}">Home</a>
+                                        <a class="nav-link" href="{{ route('home') }}">Home</a>
                                     </li>
                                     <li class="nav-item submenu dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
@@ -95,7 +95,7 @@
                                                 <a class="nav-link" href="{{ route('checkout') }}">Product Checkout</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="cart.html">Shopping Cart</a>
+                                                <a class="nav-link" href="{{ route('cart') }}">Shopping Cart</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -104,10 +104,10 @@
                                             role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="blog.html">Blog</a>
+                                                <a class="nav-link" href="{{ route('blog') }}">Blog</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="single-blog.html">Blog Details</a>
+                                                <a class="nav-link" href="{{ route('blogs') }}">Blog Details</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -116,15 +116,15 @@
                                             role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="tracking.html">Tracking</a>
+                                                <a class="nav-link" href="{{ route('tracking') }}">Tracking</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="elements.html">Elements</a>
+                                                <a class="nav-link" href="{{ route('element') }}">Elements</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="contact.html">Contact</a>
+                                        <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                                     </li>
                                 </ul>
                             </div>
@@ -232,7 +232,7 @@
                     <script>
                         document.write(new Date().getFullYear());
                     </script> All rights reserved | This template is made with <i class="fa fa-heart-o"
-                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Thuongatt</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
                 <div class="col-lg-4 col-md-12 footer-social">

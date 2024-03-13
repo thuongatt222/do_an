@@ -15,8 +15,8 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::get('/', function () {
-    return view('front.index');
-})->name('index');
+    return view('front.home');
+})->name('home');
 Route::get('/cart', function(){
     return view('front.cart');
 })->name('cart');
@@ -29,6 +29,15 @@ Route::get('/contact', function(){
 Route::get('/category', function(){
     return view('front.category');
 })->name('category');
+Route::get('/blog', function(){
+    return view('front.blog');
+})->name('blog');
+Route::get('/element', function(){
+    return view('front.elements');
+})->name('element');
+Route::get('/s-blog', function(){
+    return view('front.single-blog');
+})->name('blogs');
 Route::get('/product', function(){
     return view('front.single-product');
 })->name('product');
