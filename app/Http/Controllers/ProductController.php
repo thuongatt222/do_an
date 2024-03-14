@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\OrderDetail;
 use App\Models\Product;
@@ -25,12 +26,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->product->paginate(5);
-        $productsResource = ProductResource::collection($products)->response()->getData(true);
-        return response()->json([
-            'data' => $productsResource,
-        ], HttpResponse::HTTP_OK);
+        return new ProductCollection($products);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Brand\StoreBrandRequest;
 use App\Http\Requests\Brand\UpdateBrandRequest;
+use App\Http\Resources\Brand\BrandCollection;
 use App\Http\Resources\Brand\BrandResource;
 use App\Models\Brand;
 use App\Models\Product;
@@ -21,10 +22,8 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brand->paginate(5);
-        $brandsResource = BrandResource::collection($brands)->response()->getData(true);
-        return response()->json([
-            'data' => $brandsResource,
-        ], HttpResponse::HTTP_OK);
+        $brandsResource = new BrandCollection($brands);
+        return $brandsResource;
     }
 
     /**
