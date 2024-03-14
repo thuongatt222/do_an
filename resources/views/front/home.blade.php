@@ -671,6 +671,7 @@
         `;
         productsContainer.innerHTML += productHTML;
       });
-    });
+    })
+    .catch(error => console.error('Error:', error));
   </script>
 @endsection
