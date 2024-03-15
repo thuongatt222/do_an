@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PusherController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -60,3 +61,6 @@ Route::get('/auth/google/callback', function () {
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 });
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);

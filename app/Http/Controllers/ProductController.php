@@ -94,4 +94,16 @@ class ProductController extends Controller
             'data' => $productResource,
         ], HttpResponse::HTTP_OK);
     }
+    /**
+     * Search for products by product_name.
+     */
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        // Search for products with similar product_name
+        $products = Product::where('product_name', 'LIKE', "%$searchTerm%")->paginate(5);
+        return new ProductCollection($products);
+    }
+    
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
+use App\Http\Controllers\PusherController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SizeController;
 use App\Http\Resources\SizeConllection;
