@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PaymentController;
@@ -48,3 +49,4 @@ Route::apiResource('order', OrderController::class);
 Route::post('/cart', [OrderDetailController::class, 'cart']);
 Route::delete('/cart/remove', [OrderDetailController::class, 'removeFromCart']);
 Route::get('/cart', [OrderDetailController::class, 'showCart']);
+Route::apiResource('discount', DiscountController::class);

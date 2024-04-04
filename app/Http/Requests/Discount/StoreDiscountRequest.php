@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests\Discount;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-class UpdateProductRequest extends FormRequest
+class StoreDiscountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,9 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_name' => 'required',
-            'quantity' => 'required',
-            'price' => 'required',
-            'brand_id' => 'required',
-            'category_id' => 'required',
+            'discount' => 'required',
+            'start_day' => 'required',
+            'end_day' => 'required',
         ];
     }
     protected function failedValidation(Validator $validator)

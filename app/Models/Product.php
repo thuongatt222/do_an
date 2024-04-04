@@ -13,7 +13,6 @@ class Product extends Model
         'quantity',
         'discription',
         'price',
-        'discount',
         'brand_id',
         'category_id'
     ];

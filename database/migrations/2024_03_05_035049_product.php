@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('discription');
             $table->double('price');
-            $table->double('discount');
             $table->unsignedBigInteger('brand_id');
             $table->foreign('brand_id')->references('brand_id')->on('brand');
             $table->unsignedBigInteger('category_id');
